@@ -363,14 +363,27 @@ systemctl enable nginx
 # 2. 确保服务正常运行
 systemctl start nginx
 
+# 2.1 检查 Nginx 是否启动 （active(running)：已启动/正常运行、nactive(dead)：未启动/已关闭
+systemctl status nginx
+# 2.2 查看进程（兜底检查）
+ps -ef | grep nginx
+# 出现 master process、worker process 正在运行
+# 只有一条 grep 自身记录 未启动
+
+# 2.3 快速极简查看（只看启动状态:active 已启动、inactive 未启动）
+systemctl is-active nginx
+
 # 3. 赋予自动脚本永久执行权限
 chmod +x /usr/share/nginx/html/auto_unzip.sh
 
 # 4. 校验定时任务配置
 crontab -l
+
 ```
 
----
+![1780025875343](image/Nginx启动机制与运维目录分工规范·全自动零命令运维手册（最终完整版）/1780025875343.png)
+
+
 
 ## 八、极简记忆口诀（终身受用）
 
@@ -380,8 +393,6 @@ crontab -l
 - **改配置必重载**：站点配置修改必须校验加重载
 - **开机自启永在线**：断电重启自动恢复服务
 - **部署全自动**：上传Zip即上线，零命令运维
-
----
 
 ## 九、环境校验闭环证明（100%生效）
 
@@ -393,8 +404,6 @@ crontab -l
 - ✅ 自动解压、覆盖、清包脚本权限永久生效
 - ✅ 前端热更新生效，无需服务操作
 - ✅ 环境锁定为纯自动上线模式，日常零运维
-
----
 
 ## 十、最终权威定论
 
