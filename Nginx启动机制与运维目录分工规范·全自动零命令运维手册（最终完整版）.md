@@ -373,17 +373,19 @@ ps -ef | grep nginx
 # 2.3 快速极简查看（只看启动状态:active 已启动、inactive 未启动）
 systemctl is-active nginx
 
-# 3. 赋予自动脚本永久执行权限
+# 3. 停止Nginx
+systemctl stop nginx
+
+# 4. 赋予自动脚本永久执行权限
 chmod +x /usr/share/nginx/html/auto_unzip.sh
 
-# 4. 校验定时任务配置
+# 5. 校验定时任务配置
 crontab -l
+
 
 ```
 
 ![1780025875343](image/Nginx启动机制与运维目录分工规范·全自动零命令运维手册（最终完整版）/1780025875343.png)
-
-
 
 ## 八、极简记忆口诀（终身受用）
 
