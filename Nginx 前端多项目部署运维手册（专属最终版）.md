@@ -124,6 +124,44 @@ done
 echo "🎉 所有压缩包自动部署完成！"
 ```
 
+* Nginx `unzip -o`： 单纯 `unzip -o` ≠ 完整替换 `unzip -o` 逻辑：
+
+  * ✅ 同名文件覆盖
+  * ❌ 旧版本多余文件、废弃文件、残留目录不删除
+
+```bash
+#!/bin/bash
+# Nginx前端项目自动部署脚本：清空旧目录 - 全新解压 - 清理压缩包
+DIR="/usr/share/nginx/html"
+cd $DIR
+
+# 遍历当前目录下所有zip压缩包
+for zip_file in *.zip; do
+  # 判断是否为有效文件，跳过空匹配
+  [ -f "$zip_file" ] || continue
+  
+  # 获取项目目录名（去除.zip后缀）
+  PROJECT_NAME="${zip_file%.zip}"
+  
+  # 1. 先移除已存在的旧项目目录（彻底清空旧文件）
+  if [ -d "$PROJECT_NAME" ]; then
+    rm -rf "$PROJECT_NAME"
+    echo "🗑️  已清理旧项目目录：$PROJECT_NAME"
+  fi
+  
+  # 2. 全新解压压缩包到对应项目目录
+  unzip -o "$zip_file" -d "$PROJECT_NAME"
+  
+  # 3. 解压完成后删除原压缩包
+  rm -f "$zip_file"
+  
+  echo "✅ 部署完成：$zip_file → 全新解压至 $PROJECT_NAME，压缩包已清理"
+done
+
+echo -e "\n🎉 所有前端压缩包部署完成！旧文件已清空，新项目已全覆盖！"
+```
+
+
 ### 5\.2 赋予脚本执行权限（仅首次配置）
 
 ```bash
